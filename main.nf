@@ -5,7 +5,7 @@
 ========================================================================================
  nf-core/conva Analysis Pipeline.
  #### Homepage / Documentation
- https://github.com/nf-core/conva
+ https://github.com/kaurravneet4123
 ----------------------------------------------------------------------------------------
 */
 
@@ -19,11 +19,8 @@ log.info Utils.logo(workflow, params.monochrome_logs)
 
 def json_schema = "$projectDir/nextflow_schema.json"
 if (params.help) {
-    // TODO nf-core: Update typical command used to run pipeline
     def command = "nextflow run nf-core/conva --input samplesheet.csv --genome GRCh37 -profile docker"
     log.info NfcoreSchema.paramsHelp(workflow, params, json_schema, command)
-    log.info Workflow.citation(workflow)
-    log.info Utils.dashedLine(params.monochrome_logs)
     exit 0
 }
 
@@ -53,7 +50,7 @@ Workflow.validateMainParams(workflow, params, json_schema, log)
 ////////////////////////////////////////////////////
 
 workflow {
-    include { CONVA } from './workflows/pipeline' addParams( summary_params: summary_params )
+    include { CONVA } from './workflows/conva' addParams( summary_params: summary_params )
     CONVA ()
 }
 
