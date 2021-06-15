@@ -12,14 +12,14 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 * [Preprocessing](#preprocessing)
   * [FastQC](#fastqc) - Raw read QC
-  * [CUTADAPT](#cutadapt) - Quality trimming
+  * [Cutadapt](#cutadapt) - Quality trimming
   * [FastQC](#fastqc) - Trimmed read QC
 * [Alignment](#alignment)
-  * [BWAMEM2](#bwamem2) - Alignment to the reference genome
+  * [BWA-mem](#bwa-mem) - Alignment to the reference genome
 * [Alignment post-processing](#alignment-post-processing)
   * [SAMtools](#samtools) - Sort and index alignments
   * [picard MarkDuplicates](#picard-markduplicates) - Duplicate read marking
-* [Copy Number Variation Detection](#copy-number-vatiation-detection)
+* [Copy number variation detection](#copy-number-vatiation-detection)
   * [CNVkit](#cnvkit) - Infer copy number variation
 * [Quality control](#quality-control)
   * [MultiQC](#multiqc) - Aggregate report describing results and QC from the pipeline
@@ -41,18 +41,18 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) gives general quality metrics about your sequenced reads. It provides information about the quality score distribution across your reads, per base sequence content (%A/T/G/C), adapter contamination and overrepresented sequences. For further reading and documentation see the [FastQC help pages](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
 
-### CUTADAPT
+### Cutadapt
 
 <details markdown="1">
 <summary>Output files</summary>
 
 * `QC/cutadapt/`
-  * `*_fastq.gz`: The trimmed/modified fastq reads (these files are saved in the pipeline, therefore, you will not find them)
+  * `*_fastq.gz`: The trimmed/modified fastq reads. These files are NOT saved in the pipeline, therefore, you will not find them in the directory.
   * `*.cutadapt.log`: Cutadapt log file containing number and percentage of basepairs processed and trimmed.
 
 </details>
 
-[CUTADAPT](https://cutadapt.readthedocs.io/en/stable/) finds and removes adapter sequences, primers, poly-A tails and other types of low quality sequence from your high-throughput sequencing reads.
+[Cutadapt](https://cutadapt.readthedocs.io/en/stable/) finds and removes adapter sequences, primers, poly-A tails and other types of low quality sequence from your high-throughput sequencing reads.
 
 ### FastQC
 
@@ -66,23 +66,23 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 **NB:** The FastQC plots in this directory are generated relative to the trimmed reads. The regions of low quality have been removed.
 </details>
 
-[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) gives general quality metrics about your sequenced reads. It pro$
+[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) gives general quality metrics about your sequenced reads.
 
 ## Alignment
 
-### BWAMEM2
+### BWA-mem
 
 <details markdown="1">
 <summary>Output files</summary>
 
 * `Alignment/bwa/index/bwamem2/`
   * `*.{0123,amb,ann,bwt.2bit.64,pac}`: BWA genome index files
-* `Alignment/bwa/index/`
+* `Alignment/bwa/`
   * `*.bam`: Tumour and normal bam files.
 
 </details>
 
-[BWAMEM2](https://github.com/lh3/bwa) is a software package for mapping DNA sequences against a large reference genome, such as the human genome.
+[BWA-mem](https://github.com/lh3/bwa) is a software package for mapping DNA sequences against a large reference genome, such as the human genome.
 
 ## Alignment post-processing
 
@@ -91,7 +91,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <details markdown="1">
 <summary>Output files</summary>
 
-**NB:** Please note that SAMtools sorted and indexed files are not saved with this pipeline.
+**NB:** Please note that the SAMtools' sorted and indexed files are NOT saved in the pipeline. Therefore, you won't find them.
 
 * `Alignment/bwa/samtools_stats/`
   * SAMtools `<SAMPLE>.sorted.bam.flagstat`, `<SAMPLE>.sorted.bam.idxstats` and `<SAMPLE>.sorted.bam.stats` files generated from the alignment files.
@@ -104,10 +104,11 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <summary>Output files</summary>
 
 * `Alignment/picard/`
-  * `<SAMPLE>.markdup.sorted.bam`: Coordinate sorted BAM file after duplicate marking. This is the final post-processed BAM file and so will be saved by defau$
-  * `<SAMPLE>.markdup.sorted.bam.bai`: BAI index file for coordinate sorted BAM file after duplicate marking. This is the final post-processed BAM index file $
+  * `<SAMPLE>.markdup.sorted.bam`: Coordinate sorted BAM file after duplicate marking. This is the final post-processed BAM file and so will be saved by default.
+  * `<SAMPLE>.markdup.sorted.bam.bai`: BAI index file for coordinate sorted BAM file after duplicate marking. This is the final post-processed BAM index file and so will be saved by default in the given directory.
 * `Alignment/picard/samtools_stats/`
-  * SAMtools `<SAMPLE>.markdup.sorted.bam.flagstat`, `<SAMPLE>.markdup.sorted.bam.idxstats` and `<SAMPLE>.markdup.sorted.bam.stats` files generated from the d$
+  * SAMtools `<SAMPLE>.markdup.sorted.bam.flagstat`, `<SAMPLE>.markdup.sorted.bam.idxstats` and `<SAMPLE>.markdup.sorted.bam.stats` files generated from the duplicate marked alignment files.
+
 * `Alignment/picard/picard_metrics/`
   * `<SAMPLE>.markdup.sorted.MarkDuplicates.metrics.txt`: Metrics file from MarkDuplicates.
 
@@ -115,7 +116,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 [picard MarkDuplicates](https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard-) locates and tags duplicate reads in a BAM or SAM file, where duplicate reads are defined as originating from a single fragment of DNA.
 
-## Copy Number Variation Detection
+## Copy number variation detection
 
 ### CNVkit
 
@@ -125,10 +126,10 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 * `CNV_results/cnvkit/`
   * `<fastafile>.bed`: File containing the genomic coordinates of all the accessible regions in the given referenc genome.
   * `<fastafile>.target.bed`: File containing the genomic coordinates of the tiled regions used for targeted resequencing or all the regions in case of WGS data. 
-  * `<fastafile>.antitarget.bed`: File containing off target/antitarget regions
+  * `<fastafile>.antitarget.bed`: File containing off-target/antitarget regions
   * `<sample>.markdup.sorted.targetcoverage.cnn`: File containing coverage information in the target regions from BAM read depths.
   * `<sample>.markdup.sorted.antitargetcoverage.cnn`: File containing coverage information in the antitarget regions from BAM read depths.
-  * `reference.cnn`: File containing copy number reference information from the normal samples.
+  * `reference.cnn`: File containing reference copy number from the normal samples.
   * `<sample>.markdup.sorted.cnr`: File containing gene copy number ratios.
   * `<sample>.markdup.sorted.cns`: File containing segment's discrete copy number.
   * `<sample>.markdup.sorted.call.cns`: File containing segment's absolute integer copy number.
