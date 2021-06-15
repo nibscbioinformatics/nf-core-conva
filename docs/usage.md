@@ -2,12 +2,12 @@
 
 ## Samplesheet input
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row as shown in the examples below.
+You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location.
 
 ```bash
 --input '[path to samplesheet file]'
 ```
-It has to be a comma-separated file with 4 columns, and a header row as shown in the examples below:
+The samplesheet file has to be a comma-separated file with 4 columns, and a header row as shown in the examples below:
 
 ```bash
 sample,fastq_1,fastq_2,strandedness
@@ -42,7 +42,7 @@ An [example samplesheet](../assets/samplesheet_test.csv) has been provided with 
 
 ## Gene annotation file
 
-* You need to provide path of the locally download gene annotation file (refFlat.txt format) to '--annotate'. 
+* You need to provide path of the locally downloaded gene annotation file (refFlat.txt format) to '--annotate'. 
 
 ## Running the pipeline
 
@@ -75,7 +75,7 @@ nextflow pull nf-core-conva
 
 It's a good idea to specify a pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
 
-First, go to the [nibsbioinformatics/nf-core-conva releases page](https://github.com/nibscbioinformatics/nf-core-conva/releases) and find the latest version number - numeric only (eg. `1.0`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`.
+First, go to the [nibsbioinformatics/nf-core-conva releases page](https://github.com/nibscbioinformatics/nf-core-conva/releases) and find the latest version number - numeric only (eg. `1.0`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.0`.
 
 This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future.
 
