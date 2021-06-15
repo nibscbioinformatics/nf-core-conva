@@ -24,14 +24,12 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
 
 ## Pipeline summary
 
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
-
 1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
 2. Quality trimming ([`Cutadapt!`](https://cutadapt.readthedocs.io/en/stable/index.html))
 3. Alignment ([`BWA!`](https://github.com/lh3/bwa))
 4. Sort and index alignments ([`SAMtools`](https://sourceforge.net/projects/samtools/files/samtools/))
 5. Duplicate read marking ([`picard MarkDuplicates`](https://broadinstitute.github.io/picard/))
-6. Infer coy number changes ([`CNVkit`](https://cnvkit.readthedocs.io/en/stable/index.html))
+6. Infer copy number changes ([`CNVkit`](https://cnvkit.readthedocs.io/en/stable/index.html))
 7. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
  
 ## Quick Start
@@ -73,11 +71,10 @@ The nf-core-conva pipeline comes with documentation about the pipeline: [usage](
 
 nf-core/conva was originally written by Ravneet Bhuller.
 
-Many thanks to other who have helped out along the way too, including (but not limited to):
+Many thanks to others who have helped out along the way too, including (but not limited to):
 [@MGordon09](https://github.com/MGordon09),
 [@MartinFritzsche](https://github.com/MartinFritzsche)
 
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
 
 ## Contributions and Support
 
@@ -87,10 +84,6 @@ For further information or help, don't hesitate to get in touch on the [Slack `#
 
 ## Citations
 
-<!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->
-<!-- If you use  nf-core/conva for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
-
-<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
 You can cite the `nf-core` publication as follows:
