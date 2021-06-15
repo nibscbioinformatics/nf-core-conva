@@ -1,4 +1,6 @@
-# ![nf-core/conva](docs/images/nf-core-conva_logo.png)
+# ![nf-core-conva](docs/images/nf-core-conva_logo.png)
+
+Copy Number Variation analysis pipeline
 
 [![GitHub Actions CI Status](https://github.com/nf-core/conva/workflows/nf-core%20CI/badge.svg)](https://github.com/nf-core/conva/actions?query=workflow%3A%22nf-core+CI%22)
 [![GitHub Actions Linting Status](https://github.com/nf-core/conva/workflows/nf-core%20linting/badge.svg)](https://github.com/nf-core/conva/actions?query=workflow%3A%22nf-core+linting%22)
@@ -16,7 +18,7 @@
 
 ## Introduction
 
-**nf-core/conva** is a bioinformatics analysis pipeline to infer copy number variation in normal-tunour paired samples from whole genome sequencing data from short-read sequencing platforms like Illumina and Ion Torrent using CNVkit tool. This pipeline takes fatsq files (normal and tumour) as input, performs quality check using fastqc, quality trim using cutadapt, produces alignment files using a reference genome and BWA-mem tool, marks duplicates using Picard tool and infers copy number variation using alignment bam files, a reference genome in FASTA format, gene annotaion database in RefFlat format and CNVkit tool. 
+**nf-core/conva** is a bioinformatics analysis pipeline to infer copy number variation in normal-tumour paired samples using CNVkit tool. This pipeline is designed for use with whole genome sequencing data from short-read sequencing platforms like Illumina and Ion Torrent. It takes fastq.gz files (tumour and normal) as an input along with a reference genome in FASTA format and a gene annotation database in RefFlat format.
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible. It can also be used with Conda packages.
 
@@ -29,19 +31,19 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
 3. Alignment ([`BWA!`](https://github.com/lh3/bwa))
 4. Sort and index alignments ([`SAMtools`](https://sourceforge.net/projects/samtools/files/samtools/))
 5. Duplicate read marking ([`picard MarkDuplicates`](https://broadinstitute.github.io/picard/))
-6. Infer coy number changes ([`CNVkit`](https://cnvkit.readthedocs.io/en/stable/nonhybrid.html))
+6. Infer coy number changes ([`CNVkit`](https://cnvkit.readthedocs.io/en/stable/index.html))
 7. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
  
 ## Quick Start
 
 1. Install [`nextflow`](https://nf-co.re/usage/installation)
 
-2. Install any of [`Docker`](https://docs.docker.com/engine/installation/) or [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/), [`Podman`](https://podman.io/), [`Shifter`](https://nersc.gitlab.io/development/shifter/how-to-use/) or [`Charliecloud`](https://hpc.github.io/charliecloud/) for full pipeline reproducibility _(please only use [`Conda`](https://conda.io/miniconda.html) as a last resort; see [docs](https://nf-co.re/usage/configuration#basic-configuration-profiles))_
+2. Install any of [`Docker`](https://docs.docker.com/engine/installation/) or [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/), [`Podman`](https://podman.io/), [`Shifter`](https://nersc.gitlab.io/development/shifter/how-to-use/) or [`Charliecloud`](https://hpc.github.io/charliecloud/) for full pipeline reproducibility _(please only use [`Conda`](https://conda.io/miniconda.html) as a last resort; see [nf-core-docs](https://nf-co.re/usage/configuration#basic-configuration-profiles))_
 
 3. Download the pipeline and test it on a minimal dataset with a single command:
 
     ```bash
-    nextflow run nf-core/conva -profile test,<docker/singularity/podman/shifter/charliecloud/conda/institute>
+    nextflow run nf-core-conva -profile test,<docker/singularity/podman/shifter/charliecloud/conda/institute>
     ```
 
     * Please check [nf-core/configs](https://github.com/nf-core/configs#documentation) to see if a custom config file to run nf-core pipelines already exists for your Institute. If so, you can simply use `-profile <institute>` in your command. This will enable either `docker` or `singularity` and set the appropriate execution settings for your local compute environment.
@@ -55,9 +57,9 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
 
         ```bash
         nextflow run nf-core-conva \
-            --input Full/path/to/samplesheet.csv \
+            --input /Full/path/to/samplesheet.csv \
             --fasta GRCh38 \
-            --annotate Full/path/to/annotaionfile
+            --annotate /Full/path/to/annotaionfile \
             -profile <docker/singularity/podman/conda/institute>
         ```
 
@@ -65,7 +67,7 @@ See [usage docs](https://nf-co.re/conva/usage) for all of the available options 
 
 ## Documentation
 
-The nf-core/conva pipeline comes with documentation about the pipeline: [usage](https://nf-co.re/conva/usage) and [output](https://nf-co.re/conva/output).
+The nf-core-conva pipeline comes with documentation about the pipeline: [usage](https://nf-co.re/conva/usage) and [output](https://nf-co.re/conva/output).
 
 ## Credits
 
