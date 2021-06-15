@@ -1,5 +1,9 @@
 # nf-core/conva: Usage
 
+## Introduction
+
+To run this pipeline, you will need three files: samplesheet.csv, fasta file and annotation file.
+
 ## Samplesheet input
 
 You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location.
@@ -42,7 +46,7 @@ An [example samplesheet](../assets/samplesheet_test.csv) has been provided with 
 
 ## Gene annotation file
 
-* You need to provide path of the locally downloaded gene annotation file (refFlat.txt format) to '--annotate'. 
+* You need to provide path of the locally downloaded gene annotation file (refFlat.txt) to '--annotate'. 
 
 ## Running the pipeline
 
