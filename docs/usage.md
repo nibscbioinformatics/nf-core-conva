@@ -1,11 +1,5 @@
 # nf-core/conva: Usage
 
-## :warning: Please read this documentation on the nf-core website: [https://nf-co.re/conva/usage](https://nf-co.re/conva/usage)
-
-> _Documentation of pipeline parameters is generated automatically from the pipeline schema and can no longer be found in markdown files._
-
-## Introduction
-
 ## Samplesheet input
 
 You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row as shown in the examples below.
@@ -13,7 +7,7 @@ You will need to create a samplesheet with information about the samples you wou
 ```bash
 --input '[path to samplesheet file]'
 ```
-Below is an example for the samplesheet.csv:
+It has to be a comma-separated file with 4 columns, and a header row as shown in the examples below:
 
 ```bash
 sample,fastq_1,fastq_2,strandedness
@@ -40,11 +34,11 @@ normal,AEG588A1_S2_L002_R1_001.fastq.gz,,unstranded
 | `fastq_2`      | Full path to FastQ file for Illumina short reads 2. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".  |
 | `strandedness` | Sample strand-specificity. Must be one of `unstranded`, `forward` or `reverse`.                                             |
 
-An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
+An [example samplesheet](../assets/samplesheet_test.csv) has been provided with the pipeline.
 
 ## Reference genome file
 
-* If `--fasta` is provided then the FASTA will be automatically obtained from AWS-iGenomes unless these have already been downloaded locally and the path is specified in the command.
+* If `--fasta GRCh38` is provided then the FASTA will be automatically obtained from AWS-iGenomes unless you have already downloaded it locally and the path is specified in the command.
 
 ## Gene annotation file
 
@@ -55,7 +49,7 @@ An [example samplesheet](../assets/samplesheet.csv) has been provided with the p
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run nf-core-conva --input /path/to/samplesheet.csv --fasta GRCh38 --annotate path/to/annotationfile -profile singularity
+nextflow run nf-core-conva --input '/path/to/samplesheet.csv' --fasta GRCh38 --annotate '/path/to/annotationfile' -profile singularity
 ```
 
 This will launch the pipeline with the `singularity` configuration profile. See below for more information about profiles.
@@ -81,7 +75,7 @@ nextflow pull nf-core-conva
 
 It's a good idea to specify a pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
 
-First, go to the [nf-core/conva releases page](https://github.com/nf-core/conva/releases) and find the latest version number - numeric only (eg. `1.3.1`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`.
+First, go to the [nibsbioinformatics/nf-core-conva releases page](https://github.com/nibscbioinformatics/nf-core-conva/releases) and find the latest version number - numeric only (eg. `1.0`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`.
 
 This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future.
 
@@ -127,6 +121,13 @@ If `-profile` is not specified, the pipeline will run locally and expect all sof
   * A profile with a complete configuration for automated testing
   * Includes links to test data so needs no other parameters
 
+If you are running from within a NIBSC cluster, a *nibsc* profile is also available
+
+* `nibsc`
+  * uses singularity by default
+  * sets the right mounts to run on NIBSC HPC cluster
+  * uses *slurm* as tasks scheduler
+
 ### `-resume`
 
 Specify this when restarting a pipeline. Nextflow will used cached results from any pipeline steps where the inputs are the same, continuing from where it got to previously.
@@ -141,17 +142,17 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 Each step in the pipeline has a default set of requirements for number of CPUs, memory and time. For most of the steps in the pipeline, if the job exits with an error code of `143` (exceeded requested resources) it will automatically resubmit with higher requests (2 x original, then 3 x original). If it still fails after three times then the pipeline is stopped.
 
-Whilst these default requirements will hopefully work for most people with most data, you may find that you want to customise the compute resources that the pipeline requests. You can do this by creating a custom config file. For example, to give the workflow process `star` 32GB of memory, you could use the following config:
+Whilst these default requirements will hopefully work for most people with most data, you may find that you want to customise the compute resources that the pipeline requests. You can do this by creating a custom config file. For example, to give the workflow process `multiqc` 32GB of memory, you could use the following config:
 
 ```nextflow
 process {
-  withName: star {
+  withName: multiqc {
     memory = 32.GB
   }
 }
 ```
 
-To find the exact name of a process you wish to modify the compute resources, check the live-status of a nextflow run displayed on your terminal or check the nextflow error for a line like so: `Error executing process > 'bwa'`. In this case the name to specify in the custom config file is `bwa`.
+To find the exact name of a process you wish to modify the compute resources, check the live-status of a nextflow run displayed on your terminal or check the nextflow error for a line like so: `Error executing process > 'cnvkit'`. In this case the name to specify in the custom config file is `cnvkit`.
 
 See the main [Nextflow documentation](https://www.nextflow.io/docs/latest/config.html) for more information.
 
@@ -179,7 +180,7 @@ NXF_OPTS='-Xms1g -Xmx4g'
 
 ## Nextflow edge releases
 
-Stable releases will be becoming more infrequent as Nextflow shifts its development model to becoming more dynamic via the usage of plugins. This will allow functionality to be added as an extension to the core codebase with a release cycle that could potentially be independent to that of Nextflow itself. As a result of the reduction in stable releases, some pipelines may be required to use Nextflow `edge` releases in order to be able to exploit cutting "edge" features e.g. version 3.0 of the nf-core/rnaseq pipeline requires Nextflow `>=20.11.0-edge` in order to be able to directly download Singularity containers over `http` (see [nf-core/rnaseq#496](https://github.com/nf-core/rnaseq/issues/496)).
+Stable releases will be becoming more infrequent as Nextflow shifts its development model to becoming more dynamic via the usage of plugins. This will allow functionality to be added as an extension to the core codebase with a release cycle that could potentially be independent to that of Nextflow itself. As a result of the reduction in stable releases, some pipelines may be required to use Nextflow `edge` releases in order to be able to exploit cutting "edge" features.
 
 There are a number of ways you can install Nextflow `edge` releases, the main difference with stable releases being that you have to `export` the version you would like to install before issuing the appropriate installation/execution commands as highlighted below.
 
