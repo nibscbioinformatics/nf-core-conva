@@ -2,30 +2,41 @@
 
 ## Introduction
 
-This document describes the output produced by the pipeline. Most of the plots are taken from the MultiQC report, which summarises results at the end of the pipeline.
+This document describes the output produced by the pipeline.
 
 The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
-
-<!-- TODO nf-core: Write this documentation describing your workflow's output -->
 
 ## Pipeline overview
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
 
-* [FastQC](#fastqc) - Raw read QC
-* [MultiQC](#multiqc) - Aggregate report describing results and QC from the whole pipeline
+* [Preprocessing](#preprocessing)
+  * [FastQC](#fastqc) - Raw read QC
+  * [CUTADAPT](#cutadapt) - Quality trimming
+  * [FastQC](#fastqc) - Trimmed read QC
+* [Alignment](#alignment)
+  * [BWAMEM2](#bwamem2) - Genome alignment
+* [Alignment post-processing](#alignment-post-processing)
+  * [SAMtools](#samtools) - Sort and index alignments
+  * [picard MarkDuplicates](#picard-markduplicates) - Duplicate read marking
+* [Copy Number Variation Detection](#copy-number-vatiation-detection)
+  * [CNVkit](#cnvkit) - Infer copy number variation
+* [Quality control](#quality-control)
+  * [MultiQC](#multiqc) - Aggregate report describing results and QC from the pipeline
 * [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
+
+## Preprocessing
 
 ### FastQC
 
 <details markdown="1">
 <summary>Output files</summary>
 
-* `fastqc/`
+* `QC/fastqc_raw/`
   * `*_fastqc.html`: FastQC report containing quality metrics for your untrimmed raw fastq files.
   * `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
 
-**NB:** The FastQC plots in this directory are generated relative to the raw, input reads. They may contain adapter sequence and regions of low quality. To see how your reads look after adapter and quality trimming please refer to the FastQC reports in the `trimgalore/fastqc/` directory.
+**NB:** The FastQC plots in this directory are generated relative to the raw, input reads. They may contain regions of low quality. To see how your reads look after quality trimming please refer to the FastQC reports in the `QC/fastqc_trimmed/` directory.
 
 </details>
 
