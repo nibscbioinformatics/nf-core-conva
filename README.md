@@ -61,11 +61,9 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
             -profile <docker/singularity/podman/conda/institute>
         ```
 
-See [usage docs](https://nf-co.re/conva/usage) for all of the available options when running the pipeline.
-
 ## Documentation
 
-The nf-core-conva pipeline comes with documentation about the pipeline: [usage](https://nf-co.re/conva/usage) and [output](https://nf-co.re/conva/output).
+The nf-core-conva pipeline comes with documentation about the pipeline: [usage](https://github.com/nibscbioinformatics/nf-core-conva/blob/master/docs/usage.md) and [output](https://github.com/nibscbioinformatics/nf-core-conva/blob/master/docs/output.md).
 
 ## Credits
 
