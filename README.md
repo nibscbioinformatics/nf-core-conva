@@ -16,26 +16,27 @@
 
 ## Introduction
 
-<!-- TODO nf-core: Write a 1-2 sentence summary of what data the pipeline is for and what it does -->
-**nf-core/conva** is a bioinformatics best-practice analysis pipeline for detect and quantify copy number variation in normal-tunour paired samples.
+**nf-core/conva** is a bioinformatics analysis pipeline to infer copy number variation in normal-tunour paired samples from whole genome sequencing data from short-read sequencing platforms like Illumina and Ion Torrent using CNVkit tool. This pipeline takes fatsq files (normal and tumour) as input, performs quality check using fastqc, quality trim using cutadapt, produces alignment files using a reference genome and BWA-mem tool, marks duplicates using Picard tool and infers copy number variation using alignment bam files, a reference genome in FASTA format, gene annotaion database in RefFlat format and CNVkit tool. 
 
-The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible.
-
-<!-- TODO nf-core: Add full-sized test dataset and amend the paragraph below if applicable -->
-On release, automated continuous integration tests run the pipeline on a full-sized dataset on the AWS cloud infrastructure. This ensures that the pipeline runs on AWS, has sensible resource allocation defaults set to run on real-world datasets, and permits the persistent storage of results to benchmark between pipeline releases and other analysis sources. The results obtained from the full-sized test can be viewed on the [nf-core website](https://nf-co.re/conva/results).
+The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible. It can also be used with Conda packages.
 
 ## Pipeline summary
 
 <!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
 
 1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
-2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
-
+2. Quality trimming ([`Cutadapt!`](https://cutadapt.readthedocs.io/en/stable/index.html))
+3. Alignment ([`BWA!`](https://github.com/lh3/bwa))
+4. Sort and index alignments ([`SAMtools`](https://sourceforge.net/projects/samtools/files/samtools/))
+5. Duplicate read marking ([`picard MarkDuplicates`](https://broadinstitute.github.io/picard/))
+6. Infer coy number changes ([`CNVkit`](https://cnvkit.readthedocs.io/en/stable/nonhybrid.html))
+7. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+ 
 ## Quick Start
 
 1. Install [`nextflow`](https://nf-co.re/usage/installation)
 
-2. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/), [`Podman`](https://podman.io/), [`Shifter`](https://nersc.gitlab.io/development/shifter/how-to-use/) or [`Charliecloud`](https://hpc.github.io/charliecloud/) for full pipeline reproducibility _(please only use [`Conda`](https://conda.io/miniconda.html) as a last resort; see [docs](https://nf-co.re/usage/configuration#basic-configuration-profiles))_
+2. Install any of [`Docker`](https://docs.docker.com/engine/installation/) or [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/), [`Podman`](https://podman.io/), [`Shifter`](https://nersc.gitlab.io/development/shifter/how-to-use/) or [`Charliecloud`](https://hpc.github.io/charliecloud/) for full pipeline reproducibility _(please only use [`Conda`](https://conda.io/miniconda.html) as a last resort; see [docs](https://nf-co.re/usage/configuration#basic-configuration-profiles))_
 
 3. Download the pipeline and test it on a minimal dataset with a single command:
 
@@ -49,11 +50,16 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
 4. Start running your own analysis!
 
-    <!-- TODO nf-core: Update the example "typical command" below used to run the pipeline -->
 
-    ```bash
-    nextflow run nf-core/conva -profile <docker/singularity/podman/shifter/charliecloud/conda/institute> --input samplesheet.csv --genome GRCh37
-    ```
+    * Typical command for CNV analysis:
+
+        ```bash
+        nextflow run nf-core-conva \
+            --input Full/path/to/samplesheet.csv \
+            --fasta GRCh38 \
+            --annotate Full/path/to/annotaionfile
+            -profile <docker/singularity/podman/conda/institute>
+        ```
 
 See [usage docs](https://nf-co.re/conva/usage) for all of the available options when running the pipeline.
 
@@ -65,8 +71,9 @@ The nf-core/conva pipeline comes with documentation about the pipeline: [usage](
 
 nf-core/conva was originally written by Ravneet Bhuller.
 
-We thank the following people for their extensive assistance in the development
-of this pipeline:
+Many thanks to other who have helped out along the way too, including (but not limited to):
+[@MGordon09](https://github.com/MGordon09),
+[@MartinFritzsche](https://github.com/MartinFritzsche)
 
 <!-- TODO nf-core: If applicable, make list of people who have also contributed -->
 
