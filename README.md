@@ -18,7 +18,7 @@
 
 ## Introduction
 
-**nf-core/conva** is a bioinformatics analysis pipeline to infer copy number variation in normal-tumour paired samples using CNVkit tool. This pipeline is designed for use with whole genome sequencing data from short-read sequencing platforms like Illumina and Ion Torrent. It takes fastq.gz files (tumour and normal) as an input along with a reference genome in FASTA format and a gene annotation database in RefFlat format [e.g. refFlat.txt for hg19](http://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/).
+**nf-core-conva** is a bioinformatics analysis pipeline to infer copy number variation in normal-tumour paired samples using CNVkit tool. This pipeline is designed for use with whole genome sequencing data from short-read sequencing platforms like Illumina and Ion Torrent. It takes fastq.gz files (tumour and normal) as an input along with a reference genome in FASTA format and a gene annotation database in RefFlat format [e.g. refFlat.txt for hg19](http://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/).
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible. It can also be used with Conda packages.
 
