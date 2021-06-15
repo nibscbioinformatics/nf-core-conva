@@ -1,6 +1,6 @@
 # ![nf-core-conva](docs/images/nf-core-conva_logo.png)
 
-Copy Number Variation analysis pipeline
+**Copy Number Variation analysis pipeline**
 
 [![GitHub Actions CI Status](https://github.com/nf-core/conva/workflows/nf-core%20CI/badge.svg)](https://github.com/nf-core/conva/actions?query=workflow%3A%22nf-core+CI%22)
 [![GitHub Actions Linting Status](https://github.com/nf-core/conva/workflows/nf-core%20linting/badge.svg)](https://github.com/nf-core/conva/actions?query=workflow%3A%22nf-core+linting%22)
