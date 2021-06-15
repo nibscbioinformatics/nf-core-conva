@@ -19,16 +19,18 @@ log.info Utils.logo(workflow, params.monochrome_logs)
 
 def json_schema = "$projectDir/nextflow_schema.json"
 if (params.help) {
-    def command = "nextflow run nf-core/conva --input samplesheet.csv --genome GRCh37 -profile docker"
+    def command = "nextflow run nf-core/conva --input samplesheet.csv -profile conda"
     log.info NfcoreSchema.paramsHelp(workflow, params, json_schema, command)
     exit 0
 }
 
 ////////////////////////////////////////////////////
-/* --        GENOME PARAMETER VALUES           -- */
+/* --        FASTA PARAMETER VALUE             -- */
 ////////////////////////////////////////////////////
 
 params.fasta = Workflow.getGenomeAttribute(params, 'fasta')
+
+
 
 ////////////////////////////////////////////////////
 /* --         PRINT PARAMETER SUMMARY          -- */
