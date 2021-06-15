@@ -15,7 +15,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
   * [CUTADAPT](#cutadapt) - Quality trimming
   * [FastQC](#fastqc) - Trimmed read QC
 * [Alignment](#alignment)
-  * [BWAMEM2](#bwamem2) - Genome alignment
+  * [BWAMEM2](#bwamem2) - Alignment to the reference genome
 * [Alignment post-processing](#alignment-post-processing)
   * [SAMtools](#samtools) - Sort and index alignments
   * [picard MarkDuplicates](#picard-markduplicates) - Duplicate read marking
@@ -36,31 +36,119 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
   * `*_fastqc.html`: FastQC report containing quality metrics for your untrimmed raw fastq files.
   * `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
 
-**NB:** The FastQC plots in this directory are generated relative to the raw, input reads. They may contain regions of low quality. To see how your reads look after quality trimming please refer to the FastQC reports in the `QC/fastqc_trimmed/` directory.
-
+**NB:** The FastQC plots in this directory are generated relative to the raw, input reads. They may contain regions of low quality.
 </details>
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) gives general quality metrics about your sequenced reads. It provides information about the quality score distribution across your reads, per base sequence content (%A/T/G/C), adapter contamination and overrepresented sequences. For further reading and documentation see the [FastQC help pages](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
 
-![MultiQC - FastQC sequence counts plot](images/mqc_fastqc_counts.png)
+### CUTADAPT
 
-![MultiQC - FastQC mean quality scores plot](images/mqc_fastqc_quality.png)
+<details markdown="1">
+<summary>Output files</summary>
 
-![MultiQC - FastQC adapter content plot](images/mqc_fastqc_adapter.png)
+* `QC/cutadapt/`
+  * `*_fastq.gz`: The trimmed/modified fastq reads (these files are saved in the pipeline, therefore, you will not find them)
+  * `*.cutadapt.log`: Cutadapt log file containing number and percentage of basepairs processed and trimmed.
 
-> **NB:** The FastQC plots displayed in the MultiQC report shows _untrimmed_ reads. They may contain adapter sequence and potentially regions with low quality.
+</details>
 
+[CUTADAPT](https://cutadapt.readthedocs.io/en/stable/) finds and removes adapter sequences, primers, poly-A tails and other types of low quality sequence from your high-throughput sequencing reads.
+
+### FastQC
+
+<details markdown="1">
+<summary>Output files</summary>
+
+* `QC/fastqc_trimmed/`
+  * `*_fastqc.html`: FastQC report containing quality metrics for your trimmed fastq files.
+  * `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
+
+**NB:** The FastQC plots in this directory are generated relative to the trimmed reads. The regions of low quality have been removed.
+</details>
+
+[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) gives general quality metrics about your sequenced reads. It pro$
+
+## Alignment
+
+### BWAMEM2
+
+<details markdown="1">
+<summary>Output files</summary>
+
+* `Alignment/bwa/index/bwamem2/`
+  * `*.{0123,amb,ann,bwt.2bit.64,pac}`: BWA genome index files
+* `Alignment/bwa/index/`
+  * `*.bam`: Tumour and normal bam files.
+
+</details>
+
+[BWAMEM2](https://github.com/lh3/bwa) is a software package for mapping DNA sequences against a large reference genome, such as the human genome.
+
+## Alignment post-processing
+
+### SAMtools
+
+<details markdown="1">
+<summary>Output files</summary>
+
+**NB:** Please note that SAMtools sorted and indexed files are not saved with this pipeline.
+
+* `Alignment/bwa/samtools_stats/`
+  * SAMtools `<SAMPLE>.sorted.bam.flagstat`, `<SAMPLE>.sorted.bam.idxstats` and `<SAMPLE>.sorted.bam.stats` files generated from the alignment files.
+
+</details>
+
+### picard MarkDuplicates
+
+<details markdown="1">
+<summary>Output files</summary>
+
+* `Alignment/picard/`
+  * `<SAMPLE>.markdup.sorted.bam`: Coordinate sorted BAM file after duplicate marking. This is the final post-processed BAM file and so will be saved by defau$
+  * `<SAMPLE>.markdup.sorted.bam.bai`: BAI index file for coordinate sorted BAM file after duplicate marking. This is the final post-processed BAM index file $
+* `Alignment/picard/samtools_stats/`
+  * SAMtools `<SAMPLE>.markdup.sorted.bam.flagstat`, `<SAMPLE>.markdup.sorted.bam.idxstats` and `<SAMPLE>.markdup.sorted.bam.stats` files generated from the d$
+* `Alignment/picard/picard_metrics/`
+  * `<SAMPLE>.markdup.sorted.MarkDuplicates.metrics.txt`: Metrics file from MarkDuplicates.
+
+</details>
+
+[picard MarkDuplicates](https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard-) locates and tags duplicate reads in a BAM or SAM file, where duplicate reads are defined as originating from a single fragment of DNA.
+
+## Copy Number Variation Detection
+
+### CNVkit
+
+<details markdown="1">
+<summary>Output files</summary>
+
+* `CNV_results/cnvkit/`
+  * `<fastafile>.bed`: File containing the genomic coordinates of all the accessible regions in the given referenc genome.
+  * `<fastafile>.target.bed`: File containing the genomic coordinates of the tiled regions used for targeted resequencing or all the regions in case of WGS data. 
+  * `<fastafile>.antitarget.bed`: File containing off target/antitarget regions
+  * `<sample>.markdup.sorted.targetcoverage.cnn`: File containing coverage information in the target regions from BAM read depths.
+  * `<sample>.markdup.sorted.antitargetcoverage.cnn`: File containing coverage information in the antitarget regions from BAM read depths.
+  * `reference.cnn`: File containing copy number reference information from the normal samples.
+  * `<sample>.markdup.sorted.cnr`: File containing gene copy number ratios.
+  * `<sample>.markdup.sorted.cns`: File containing segment's discrete copy number.
+  * `<sample>.markdup.sorted.call.cns`: File containing segment's absolute integer copy number.
+
+</details>
+
+[CNVkit](https://cnvkit.readthedocs.io/en/stable/) infers and visualizes copy number from high-throughput DNA sequencing data.
+ 
 ### MultiQC
 
 <details markdown="1">
 <summary>Output files</summary>
 
-* `multiqc/`  
+* `QC/multiqc/`  
   * `multiqc_report.html`: a standalone HTML file that can be viewed in your web browser.
   * `multiqc_data/`: directory containing parsed statistics from the different tools used in the pipeline.
   * `multiqc_plots/`: directory containing static images from the report in various formats.
 
 </details>
+
 
 [MultiQC](http://multiqc.info) is a visualization tool that generates a single HTML report summarising all samples in your project. Most of the pipeline QC results are visualised in the report and further statistics are available in the report data directory.
 
