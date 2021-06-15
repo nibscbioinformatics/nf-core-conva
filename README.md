@@ -57,9 +57,9 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
 
         ```bash
         nextflow run nf-core-conva \
-            --input /Full/path/to/samplesheet.csv \
+            --input '[/path/to/samplesheet.csv]' \
             --fasta GRCh38 \
-            --annotate /Full/path/to/annotaionfile \
+            --annotate '[/path/to/annotaionfile]' \
             -profile <docker/singularity/podman/conda/institute>
         ```
 
