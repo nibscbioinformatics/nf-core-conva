@@ -51,7 +51,11 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
     NXF_SINGULARITY_CACHEDIR=/path/to/central/location nextflow run nf-core-conva -profile test,singularity
     ```        
 
-    * If you are using `conda`, it is highly recommended to use the [`NXF_CONDA_CACHEDIR` or `conda.cacheDir`](https://www.nextflow.io/docs/latest/conda.html) settings to store the environments in a central location for future pipeline runs.
+    * If you are using `conda`, it is highly recommended to use the [`NXF_CONDA_CACHEDIR` or `conda.cacheDir`](https://www.nextflow.io/docs/latest/conda.html) settings to store the environments in a central location for future pipeline runs as shown below:
+
+    ```bash
+    NXF_CONDA_CACHEDIR=/path/to/central/location nextflow run nf-core-conva -profile test,conda
+    ```
 
 4. Start running your own analysis!
 
