@@ -60,7 +60,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
 4. Start running your own analysis!
 
 
-    * Typical command for CNV analysis in the directory above the nf-cor-conva directory:
+    * Typical command for CNV analysis in the directory above the nf-core-conva directory:
 
         ```bash
         nextflow run nf-core-conva \
