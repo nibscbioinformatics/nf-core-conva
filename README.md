@@ -66,7 +66,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
         nextflow run nf-core-conva \
             --input '[/path/to/samplesheet.csv]' \
             --fasta GRCh38 \
-            --annotate '[/path/to/annotaionfile]' \
+            --annotationfile '[/path/to/annotaionfile]' \
             -profile <docker/singularity/podman/conda/institute>
         ```
 
