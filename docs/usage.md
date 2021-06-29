@@ -42,18 +42,18 @@ An [example samplesheet](../assets/samplesheet_test.csv) has been provided with 
 
 ## Reference genome file
 
-* If `--fasta GRCh38` is provided then the FASTA will be automatically obtained from AWS-iGenomes unless you have already downloaded it locally and the path is specified in the command.
+* You need to provide the path of locally downloaded reference genome fasta file to '--fasta'.
 
 ## Gene annotation file
 
-* You need to provide path of the locally downloaded gene annotation file (refFlat.txt) to '--annotate'. 
+* You need to provide path of the locally downloaded gene annotation file (refFlat.txt) to '--annotationfile'. 
 
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run nf-core-conva --input '/path/to/samplesheet.csv' --fasta GRCh38 --annotate '/path/to/annotationfile' -profile singularity
+NXF_SINGULARITY_CACHEDIR=/path/to/central/location nextflow run nf-core-conva --input '/path/to/samplesheet.csv' --fasta 'path/to/the/genome-fasta' --annotationfile '/path/to/annotationfile' -profile singularity
 ```
 
 This will launch the pipeline with the `singularity` configuration profile. See below for more information about profiles.

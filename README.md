@@ -60,7 +60,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
             --annotationfile '[/path/to/annotaionfile]' \
             -profile singularity
         ```
-    * Please note that an example samplesheet.csv can be seen in the nf-core-conva/assets/ directory.
+    * Further details about the format of samplesheet.csv can be seen in the [usage](https://github.com/nibscbioinformatics/nf-core-conva/blob/master/docs/usage.md) document.
 
 ## Documentation
 
