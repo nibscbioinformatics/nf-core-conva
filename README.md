@@ -74,13 +74,6 @@ Many thanks to others who have helped out along the way too, including (but not 
 [@MGordon09](https://github.com/MGordon09),
 [@MartinFritzsche](https://github.com/MartinFritzsche)
 
-
-## Contributions and Support
-
-If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
-
-For further information or help, don't hesitate to get in touch on the [Slack `#conva` channel](https://nfcore.slack.com/channels/conva) (you can join with [this invite](https://nf-co.re/join/slack)).
-
 ## Citations
 
 You can cite the `nf-core` publication as follows:
