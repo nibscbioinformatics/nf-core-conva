@@ -48,11 +48,10 @@ include { MULTIQC                   } from '../modules/nf-core/software/multiqc/
 include { CNVKIT                    } from '../modules/nf-core/software/cnvkit/main'        addParams( options: modules['cnvkit' ]           )
 
 // Subworkflows: local
-include { INPUT_CHECK               } from '../subworkflows/local/input_check'              addParams( options: [:] )
+include { INPUT_CHECK               } from '../subworkflows/local/input_check'              addParams( options: [:]                          )
 
 // Subworkflows: nf-core/subworkflows
 def picard_markduplicates_samtools   = modules['picard_markduplicates_samtools']
-//picard_markduplicates_samtools.args += params.bam_csi_index ? Utils.joinModuleArgs(['-c']) : ''
 
 include { BAM_SORT_SAMTOOLS      } from '../subworkflows/nf-core/bam_sort_samtools'      addParams( sort_options: modules['samtools_sort'], index_options: modules['samtools_index'], stats_options: modules['samtools_stats']                                )
 include { MARK_DUPLICATES_PICARD } from '../subworkflows/nf-core/mark_duplicates_picard' addParams( markduplicates_options: modules['picard_markduplicates'], samtools_index_options: picard_markduplicates_samtools, samtools_stats_options:  picard_markduplicates_samtools )
@@ -83,34 +82,28 @@ workflow CONVA {
     /*
      * MODULE: Read QC
      */
-    //ch_fastqc_raw_multiqc = Channel.empty()
     FASTQC_RAW (
         ch_fastq
     )
-    //ch_fastqc_raw_multiqc = FASTQC_RAW.out.zip
     ch_software_versions  = ch_software_versions.mix(FASTQC_RAW.out.version.first().ifEmpty(null))
 
     
     /*
      * MODULE: Quality trimming
      */
-    ch_cutadapt_multiqc = Channel.empty()
     CUTADAPT (
         ch_fastq
     )
     ch_trimmed_reads = CUTADAPT.out.reads
-    //ch_cutadapt_multiqc = CUTADAPT.out.log
     ch_software_versions = ch_software_versions.mix(CUTADAPT.out.version.first().ifEmpty(null))
 
 
     /*
      * MODULE: Trimmed-read QC
      */
-    //ch_fastqc_trimmed_multiqc = Channel.empty()
     FASTQC_TRIMMED (
         ch_trimmed_reads
     )
-    //ch_fastqc_trimmed_multiqc = FASTQC_TRIMMED.out.zip
     ch_software_versions = ch_software_versions.mix(FASTQC_TRIMMED.out.version.first().ifEmpty(null))
 
 
@@ -147,17 +140,12 @@ workflow CONVA {
     /*
      * SUBWORKFLOW: Mark duplicate reads and run stats on it
      */
-    //ch_markduplicates_multiqc = Channel.empty()
-    //ch_samtools_stats         = Channel.empty()
-    //ch_samtools_flagstat      = Channel.empty()
-    //ch_samtools_idxstats      = Channel.empty()
     MARK_DUPLICATES_PICARD (
         bam
     )
     ch_samtools_stats         = MARK_DUPLICATES_PICARD.out.stats
     ch_samtools_flagstat      = MARK_DUPLICATES_PICARD.out.flagstat
     ch_samtools_idxstats      = MARK_DUPLICATES_PICARD.out.idxstats
-    //ch_markduplicates_multiqc = MARK_DUPLICATES_PICARD.out.metrics
     ch_software_versions      = ch_software_versions.mix(MARK_DUPLICATES_PICARD.out.picard_version.first().ifEmpty(null))
 
 
@@ -204,6 +192,9 @@ workflow CONVA {
         ch_multiqc_files = ch_multiqc_files.mix(GET_SOFTWARE_VERSIONS.out.yaml.collect())
         ch_multiqc_files = ch_multiqc_files.mix(FASTQC_RAW.out.zip.collect{it[1]}.ifEmpty([]))
         ch_multiqc_files = ch_multiqc_files.mix(FASTQC_TRIMMED.out.zip.collect{it[1]}.ifEmpty([]))
+        ch_multiqc_files = ch_multiqc_files.mix(MARK_DUPLICATES_PICARD.out.metrics.collect{it[1]}.ifEmpty([]))
+        ch_multiqc_files = ch_multiqc_files.mix(ch_samtools_stats.collect{it[1]}.ifEmpty([]))
+        ch_multiqc_files = ch_multiqc_files.mix(ch_samtools_flagstat.collect{it[1]}.ifEmpty([]))
 
         MULTIQC (
                 ch_multiqc_files.collect()
