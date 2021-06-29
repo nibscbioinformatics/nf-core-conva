@@ -60,15 +60,16 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
 4. Start running your own analysis!
 
 
-    * Typical command for CNV analysis in the directory above the nf-core-conva directory:
+    * Typical command for singularity based CNV analysis (in the directory above the nf-core-conva directory):
 
         ```bash
-        nextflow run nf-core-conva \
+         NXF_SINGULARITY_CACHEDIR=/path/to/central/location nextflow run nf-core-conva \
             --input '[/path/to/samplesheet.csv]' \
-            --fasta GRCh38 \
+            --fasta '[/path/to/reference_genome.fa]' \
             --annotationfile '[/path/to/annotaionfile]' \
-            -profile <docker/singularity/podman/conda/institute>
+            -profile singularity
         ```
+    * Please note that an example samplesheet.csv can be seen in the nf-core-conva/assets/ directory.
 
 ## Documentation
 
