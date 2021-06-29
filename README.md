@@ -77,7 +77,7 @@ The nf-core-conva pipeline comes with documentation about the pipeline: [usage](
 
 ## Credits
 
-nf-core/conva was originally written by Ravneet Bhuller.
+nf-core-conva is written by Ravneet Bhuller.
 
 Many thanks to others who have helped out along the way too, including (but not limited to):
 [@MGordon09](https://github.com/MGordon09),
