@@ -50,9 +50,9 @@ Workflow.validateMainParams(workflow, params, json_schema, log)
 ////////////////////////////////////////////////////
 /* --            RUN WORKFLOW(S)               -- */
 ////////////////////////////////////////////////////
+include { CONVA } from './workflows/conva' addParams( summary_params: summary_params )
 
 workflow {
-    include { CONVA } from './workflows/conva' addParams( summary_params: summary_params )
     CONVA ()
 }
 
