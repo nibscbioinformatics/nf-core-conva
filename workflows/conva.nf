@@ -159,11 +159,11 @@ workflow CONVA {
      * MODULE: Copy number variation identification and quantification
      */
     // Remove  meta.ids for cnvkit and sequenza modules
-    lst1 = MARK_DUPLICATES_PICARD.out.bam.flatten().filter( ~/^.*normal.*bam/ ).toList()
+    //lst1 = MARK_DUPLICATES_PICARD.out.bam.flatten().filter( ~/^.*normal.*bam/ ).toList()
     //lst1.view()
-    lst2 = MARK_DUPLICATES_PICARD.out.bam.flatten().filter( ~/^.*tumour.*bam/ ).toList()
+    //lst2 = MARK_DUPLICATES_PICARD.out.bam.flatten().filter( ~/^.*tumour.*bam/ ).toList()
     //lst2.view()
-    lst_bams = lst1.add(lst2)
+    //lst_bams = lst1.add(lst2)
     //println(lst_bams)
     //lst_bams.view()
     //lst.sort { it.size() }.view()
