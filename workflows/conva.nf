@@ -9,15 +9,15 @@ params.summary_params = [:]
 ////////////////////////////////////////////////////
 
 // Check input path parameters to see if they exist
-checkPathParamList = [ params.input,  params.fasta, params.annotationfile, params.vcf, params.tbi ]
+checkPathParamList = [ params.input,  params.fasta, params.annotationfile ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 if (params.fasta) { ch_fasta = file(params.fasta) } else { exit 1, 'Adapter file not specified!' }
 if (params.annotationfile) { ch_annotationfile = file(params.annotationfile) } else { exit 1, 'Annotation file not specified!' }
-if (params.vcf) { ch_vcf = file(params.vcf) } else { exit 1, 'VCF file not specified!' }
-if (params.tbi) { ch_tbi = file(params.tbi) } else { exit 1, 'TBI (VCF index) file not specified!' }
+//if (params.vcf) { ch_vcf = file(params.vcf) } else { exit 1, 'VCF file not specified!' }
+//if (params.tbi) { ch_tbi = file(params.tbi) } else { exit 1, 'TBI (VCF index) file not specified!' }
 
 ////////////////////////////////////////////////////
 /* --          CONFIG FILES                    -- */
