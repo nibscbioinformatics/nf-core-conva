@@ -49,8 +49,8 @@ include { BWAMEM2_INDEX             } from '../modules/nf-core/software/bwamem2/
 include { BWAMEM2_MEM               } from '../modules/nf-core/software/bwamem2/mem/main'   addParams( options: modules['bwamem2_mem']       )
 include { MULTIQC                   } from '../modules/nf-core/software/multiqc/main'       addParams( options: multiqc_options              )
 include { CNVKIT                    } from '../modules/nf-core/software/cnvkit/main'        addParams( options: modules['cnvkit' ]           )
-include { SEQUENZAUTILS_GCWIGGLE    } from '../modules/nf-core/software/sequenzautils/gcwiggle/main' addParams( options: modules['sequenzautils_gcwiggle' ]  )
-include { SEQUENZAUTILS_BAM2SEQZ    } from '../modules/nf-core/software/sequenzautils/bam2seqz/main' addParams( options: modules['sequenzautils_bam2seqz' ]  )
+//include { SEQUENZAUTILS_GCWIGGLE    } from '../modules/nf-core/software/sequenzautils/gcwiggle/main' addParams( options: modules['sequenzautils_gcwiggle' ]  )
+//include { SEQUENZAUTILS_BAM2SEQZ    } from '../modules/nf-core/software/sequenzautils/bam2seqz/main' addParams( options: modules['sequenzautils_bam2seqz' ]  )
 
 // Subworkflows: local
 include { INPUT_CHECK               } from '../subworkflows/local/input_check'              addParams( options: [:]                          )
