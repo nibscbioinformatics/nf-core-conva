@@ -25,8 +25,8 @@ process CNVFACETS {
     path tbi
 
     output:
-    path "*", emit: outdir
-    path "*.version.txt"          , emit: version
+    path "*"            , emit: outdir
+    path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)

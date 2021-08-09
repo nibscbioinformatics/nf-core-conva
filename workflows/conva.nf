@@ -9,15 +9,15 @@ params.summary_params = [:]
 ////////////////////////////////////////////////////
 
 // Check input path parameters to see if they exist
-checkPathParamList = [ params.input,  params.fasta, params.annotationfile ]
+checkPathParamList = [ params.input,  params.fasta, params.annotationfile, params.vcf, params.tbi ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 if (params.fasta) { ch_fasta = file(params.fasta) } else { exit 1, 'Adapter file not specified!' }
 if (params.annotationfile) { ch_annotationfile = file(params.annotationfile) } else { exit 1, 'Annotation file not specified!' }
-//if (params.vcf) { ch_vcf = file(params.vcf) } else { exit 1, 'VCF file not specified!' }
-//if (params.tbi) { ch_tbi = file(params.tbi) } else { exit 1, 'TBI (VCF index) file not specified!' }
+if (params.vcf) { ch_vcf = file(params.vcf) } else { exit 1, 'VCF file not specified!' }
+if (params.tbi) { ch_tbi = file(params.tbi) } else { exit 1, 'TBI (VCF index) file not specified!' }
 
 ////////////////////////////////////////////////////
 /* --          CONFIG FILES                    -- */
@@ -158,32 +158,8 @@ workflow CONVA {
     /*
      * MODULE: Copy number variation identification and quantification
      */
-    // Remove  meta.ids for cnvkit and sequenza modules
-    //lst1 = MARK_DUPLICATES_PICARD.out.bam.flatten().filter( ~/^.*normal.*bam/ ).toList()
-    //lst1.view()
-    //lst2 = MARK_DUPLICATES_PICARD.out.bam.flatten().filter( ~/^.*tumour.*bam/ ).toList()
-    //lst2.view()
-    //lst_bams = lst1.add(lst2)
-    //println(lst_bams)
-    //lst_bams.view()
-    //lst.sort { it.size() }.view()
-    //rmlst = lst.remove(0)
-    //bamlst = lst.minus(rmlst)
-    //normal_index = lst.indexOf('normal.markdup.sorted.bam')
-    
-    //bamlst.view()
-    
-    //lst2 = bamlst.remove(1)
-    //ch_bams = bamlst.minus(lst2).sort()
-    //ch_bams.view()
-
+    // Remove  meta.ids for cnvkit module
     ch_bams = MARK_DUPLICATES_PICARD.out.bam.flatten().filter( ~/^.*bam/ ).toList().sort { it.size() }.groupTuple()
-    //lsts.view()
-    //rmlsts = lsts.remove(0)
-    //bamlsts = lsts.minus(rmlsts)
-    //bamlsts.view()
-    //lsts = bamlsts.remove(1)
-    //ch_bamss = bamlsts.minus(lst2).toSortedList()
     //ch_bams.view()
 
     // Run CNVkit tool	
@@ -224,9 +200,10 @@ workflow CONVA {
     ch_tumourbam_bai.view()
 
 
-    //CNVFACETS (
-    //    ch_normalbam_bai, ch_tumourbam_bai, ch_vcf, ch_tbi    
-    //)
+    CNVFACETS (
+        ch_normalbam_bai, ch_tumourbam_bai, ch_vcf, ch_tbi    
+    )
+    ch_software_versions = ch_software_versions.mix(CNVFACETS.out.version.first().ifEmpty(null))
 
     /*
      * MODULE: Pipeline reporting
