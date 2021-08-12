@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////
-/* --          VALIDATE INPUTS                 -- */
+/* --         LOCAL PARAMETER VALUES           -- */
 ////////////////////////////////////////////////////
 
-def valid_params = [
-    tool           : ['cnvkit', 'cnvfacets']
-]
+params.summary_params = [:]
 
-//def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
+////////////////////////////////////////////////////
+/* --          VALIDATE INPUTS                 -- */
+////////////////////////////////////////////////////
 
 // Check input path parameters to see if they exist
 checkPathParamList = [ params.input,  params.fasta, params.annotationfile, params.vcf, params.tbi ]
@@ -156,49 +156,54 @@ workflow CONVA {
     //MARK_DUPLICATES_PICARD.out.bam.view()
    
     /*
-     * Copy number variation identification and quantification
+     * MODULE: Copy number variation identification and quantification
      */
-    // Remove  meta.ids to create input channel for cnvkit module
+    // Remove  meta.ids for cnvkit module
     ch_bams = MARK_DUPLICATES_PICARD.out.bam.flatten().filter( ~/^.*bam/ ).toList().sort { it.size() }.groupTuple()
     //ch_bams.view()
 
-    // Create input channels for cnvfacets module
+    // Run CNVkit tool	
+    CNVKIT (
+        ch_bams, ch_fasta, ch_annotationfile
+    )
+    ch_software_versions = ch_software_versions.mix(CNVKIT.out.version.first().ifEmpty(null))
+
+    // Run Sequenza tool
+    //SEQUENZAUTILS_GCWIGGLE (
+    //    ch_fasta
+    //)
+    //ch_wig = SEQUENZAUTILS_GCWIGGLE.out.wig
+
+    // Remove meta.id
+    //lst2 = bamlst.remove(0)
+    //ch_bam4seqz = bamlst.minus(bamlst.remove(0))
+
+    //SEQUENZAUTILS_BAM2SEQZ (
+    //    ch_bams, ch_fasta, ch_wig
+    //)
+    //ch_seqz = SEQUENZAUTILS_BAM2SEQZ.out.seqz    
+
+    
+    //SEQUENZAUTILS_SEQZBINNING (
+    //    ch_seqz
+    //)
+
+
+    /*
+     * MODULE: CNV_FACETS
+     */
     ch_merged_bam_bai = MARK_DUPLICATES_PICARD.out.bam.join(MARK_DUPLICATES_PICARD.out.bai)
-    //ch_merged_bam_bai.view()
+    //ch_merged_bam_bai.view() 
     ch_normalbam_bai = ch_merged_bam_bai.filter( ~/^.*normal.markdup.sorted.bam.bai]/ )
     //ch_normalbam_bai.view()
-    ch_tumourbam_bai = ch_merged_bam_bai.filter( ~/^.*tumour.markdup.sorted.bam.bai]/ )
-    ch_tumourbam_bai.view()    
+    ch_tumourbam_bai = ch_merged_bam_bai.filter( ~/^.*tumour.markdup.sorted.bam.bai]/ )      
+    ch_tumourbam_bai.view()
 
-    if (params.tool == 'cnvkit') {
-                
-        CNVKIT (
-            ch_bams, ch_fasta, ch_annotationfile
-        )
-        ch_software_versions = ch_software_versions.mix(CNVKIT.out.version.first().ifEmpty(null))
-    }
 
-    if (params.tool == 'cnvfacets') {
-                
-        CNVFACETS (
-            ch_normalbam_bai, ch_tumourbam_bai, ch_vcf, ch_tbi    
-        )
-        ch_software_versions = ch_software_versions.mix(CNVFACETS.out.version.first().ifEmpty(null))
-    }
-
-    if (params.tool == 'all') {
-  
-        CNVKIT (
-            ch_bams, ch_fasta, ch_annotationfile
-        )
-        ch_software_versions = ch_software_versions.mix(CNVKIT.out.version.first().ifEmpty(null))
-
-        CNVFACETS (
-            ch_normalbam_bai, ch_tumourbam_bai, ch_vcf, ch_tbi
-        )
-        ch_software_versions = ch_software_versions.mix(CNVFACETS.out.version.first().ifEmpty(null))
-
-    }
+    CNVFACETS (
+        ch_normalbam_bai, ch_tumourbam_bai, ch_vcf, ch_tbi    
+    )
+    ch_software_versions = ch_software_versions.mix(CNVFACETS.out.version.first().ifEmpty(null))
 
     /*
      * MODULE: Pipeline reporting

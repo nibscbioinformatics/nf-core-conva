@@ -21,6 +21,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
   * [picard MarkDuplicates](#picard-markduplicates) - Duplicate read marking
 * [Copy number variation detection](#copy-number-vatiation-detection)
   * [CNVkit](#cnvkit) - Infer copy number variation
+  * [cnv_facets](#cnvfacets) - Infer copy number variation
 * [Quality control](#quality-control)
   * [MultiQC](#multiqc) - Aggregate report describing results and QC from the pipeline
 * [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
@@ -138,6 +139,22 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 [CNVkit](https://cnvkit.readthedocs.io/en/stable/) infers and visualizes copy number from high-throughput DNA sequencing data.
  
+### cnv_facets
+
+<details markdown="1">
+<summary>Output files</summary>
+
+* `CNV_results/cnvfacets/`
+  * `<prefix>.vcf.gz`: VCF file compressed and indexed of copy number variants.
+  * `<prefix>.cnv.png`: Summary plot of CNVs across the genome.
+  * `<prefix>.cov.pdf`: Histograms of the distribution of read depth (coverage) across all the position in the tumour and normal sample, before and after filtering positions.
+  * `<prefix>.spider.pdf`: This is a diagnostic plot to check how well the copy number fits work The estimated segment summaries are plotted as circles where the size of the circle increases with the number of loci in the segment. The expected value for various integer copy number states are drawn as curves for purity ranging from 0 to 0.95. For a good fit, the segment summaries should be close to one of the lines.
+  * `<prefix>.csv.gz`: File of nucleotide counts at each SNP in normal and tumour sample.
+
+</details>
+
+[cnv_facets](https://github.com/dariober/cnv_facets) detects somatic copy number variants (CNV) in tumour-normal samples using the [facets](https://github.com/mskcc/facets) package.
+
 ### MultiQC
 
 <details markdown="1">

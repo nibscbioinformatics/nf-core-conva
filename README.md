@@ -9,7 +9,7 @@
 
 ## Introduction
 
-**nf-core-conva** is a bioinformatics analysis pipeline to infer copy number variation in normal-tumour paired samples using CNVkit tool. This pipeline is designed for use with whole genome sequencing data from short-read sequencing platforms like Illumina and Ion Torrent. It takes fastq.gz files (tumour and normal) as an input along with a reference genome in FASTA format and a gene annotation database in RefFlat format [e.g. refFlat.txt for hg38](http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/).
+**nf-core-conva** is a bioinformatics analysis pipeline to infer copy number variation in normal-tumour paired samples using CNVkit tool or cnv_facets tool or both. This pipeline is designed for use with whole genome sequencing data from short-read sequencing platforms like Illumina and Ion Torrent. It takes fastq.gz files (tumour and normal) as an input along with a reference genome in FASTA format and a gene annotation database in RefFlat format [e.g. refFlat.txt for hg38](http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/). It also needs a sorted VCF file of common, polymorphic SNPs. For human samples, a good source is the dbSNP file ([common_all_20180418.vcf.gz](https://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/VCF/)) if you are using GRCh38 Human reference genome and its index file in TBI format.
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker / Singularity containers making installation trivial and results highly reproducible. It can also be used with Conda packages.
 
@@ -20,7 +20,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
 3. Alignment ([`BWA!`](https://github.com/lh3/bwa))
 4. Sort and index alignments ([`SAMtools`](https://sourceforge.net/projects/samtools/files/samtools/))
 5. Duplicate read marking ([`picard MarkDuplicates`](https://broadinstitute.github.io/picard/))
-6. Infer copy number changes ([`CNVkit`](https://cnvkit.readthedocs.io/en/stable/index.html))
+6. Infer copy number changes ([`CNVkit`](https://cnvkit.readthedocs.io/en/stable/index.html)) or ([`cnv_facets`](https://github.com/dariober/cnv_facets)) or both
 7. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
  
 ## Quick Start
@@ -58,6 +58,10 @@ The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool
             --input '[/path/to/samplesheet.csv]' \
             --fasta '[/path/to/reference_genome.fa]' \
             --annotationfile '[/path/to/annotaionfile]' \
+            --vcf '[/path/to/sorted_vcf_file]' \
+            --tbi '[/path/to/vcf_index.tbi]' \
+            --tool 'cnvkit or cnvfacets or all' \ # choose any one option
+            --outdir '[/path/to/results/folder/]' \
             -profile singularity
         ```
     * Further details about the format of samplesheet.csv can be seen in the [usage](https://github.com/nibscbioinformatics/nf-core-conva/blob/master/docs/usage.md) document.
@@ -68,7 +72,7 @@ The nf-core-conva pipeline comes with documentation about the pipeline: [usage](
 
 ## Credits
 
-nf-core-conva is written by Ravneet Bhuller.
+nf-core-conva is written by Ravneet Bhuller [@kaurravneet4123](https://github.com/kaurravneet4123).
 
 Many thanks to others who have helped out along the way too, including (but not limited to):
 [@MGordon09](https://github.com/MGordon09),

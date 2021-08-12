@@ -2,7 +2,8 @@
 
 ## Introduction
 
-To run this pipeline, you will need three files: samplesheet.csv, fasta file and annotation file.
+To run this pipeline, you will need five files: samplesheet.csv, fasta file, annotation file, sorted VCF file and vcf index file in tbi format.
+NOTE: Chromosome notation must be same in the fasta file, annotation file and sorted VCF and its index file. 
 
 ## Samplesheet input
 
@@ -48,12 +49,20 @@ An [example samplesheet](../assets/samplesheet_test.csv) has been provided with 
 
 * You need to provide path of the locally downloaded gene annotation file (refFlat.txt) to '--annotationfile'. 
 
+## VCF file
+
+* You need to provide path of the locally downloaded and sorted VCF file of common, polymorphic SNPs to '--vcf'. For human samples, a good source is the dbSNP file ([common_all_20180418.vcf.gz](https://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/VCF/)) if you are using GRCh38 Human reference genome.
+
+## VCF index file
+
+*  You need to provide path of VCF index file (tbi format) to '--tbi'.
+
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
 
 ```bash
-NXF_SINGULARITY_CACHEDIR=/path/to/central/location nextflow run nf-core-conva --input '/path/to/samplesheet.csv' --fasta 'path/to/the/genome-fasta' --annotationfile '/path/to/annotationfile' -profile singularity
+NXF_SINGULARITY_CACHEDIR=/path/to/central/location nextflow run nf-core-conva --input '/path/to/samplesheet.csv' --fasta 'path/to/the/genome-fasta' --annotationfile '/path/to/annotationfile' --vcf '/path/to/sorted vcf file' --tbi '/path/to/vcf.tbi' --tool all --outdir '/path/to/results/folder' -profile singularity
 ```
 
 This will launch the pipeline with the `singularity` configuration profile. See below for more information about profiles.
