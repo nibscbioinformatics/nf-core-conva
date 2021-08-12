@@ -21,7 +21,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
   * [picard MarkDuplicates](#picard-markduplicates) - Duplicate read marking
 * [Copy number variation detection](#copy-number-vatiation-detection)
   * [CNVkit](#cnvkit) - Infer copy number variation
-  * [cnv_facets](#cnvfacets) - Infer copy number variation
+  * [cnv_facets](#cnv_facets) - Infer copy number variation
 * [Quality control](#quality-control)
   * [MultiQC](#multiqc) - Aggregate report describing results and QC from the pipeline
 * [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution

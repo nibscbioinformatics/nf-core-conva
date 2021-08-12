@@ -3,6 +3,7 @@
 ## Introduction
 
 To run this pipeline, you will need five files: samplesheet.csv, fasta file, annotation file, sorted VCF file and vcf index file in tbi format.
+
 NOTE: Chromosome notation must be same in the fasta file, annotation file and sorted VCF and its index file. 
 
 ## Samplesheet input
